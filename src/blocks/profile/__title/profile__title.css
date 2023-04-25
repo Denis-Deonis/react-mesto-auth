@@ -1,0 +1,27 @@
+.profile__title {
+  margin: 0;
+  padding: 0;
+  max-width: 294px;
+  font-weight: 500;
+  font-size: 2.625rem;
+  line-height: 3rem;
+  /* лишний текст превращает в точки */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 619px) {
+  .profile__title {
+    max-width: 248px;
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .profile__title {
+    font-size: 1.6875rem;
+    line-height: 2.0625rem;
+  }
+}

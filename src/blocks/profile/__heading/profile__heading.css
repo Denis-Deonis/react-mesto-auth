@@ -1,0 +1,11 @@
+.profile__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+@media screen and (max-width: 900px) {
+  .profile__heading {
+    gap: 10px;
+  }
+}

@@ -1,0 +1,9 @@
+.element__count-like {
+  margin: 0;
+  font-weight: 400;
+  font-size: .8125rem;
+  line-height: 16px;
+  text-align: center;
+  color: #000;
+  margin-top: .1875rem;
+}

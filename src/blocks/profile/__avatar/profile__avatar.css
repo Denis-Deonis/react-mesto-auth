@@ -1,0 +1,19 @@
+.profile__avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  transition: .5s linear;
+}
+
+@media screen and (max-width: 900px) {
+  .profile__avatar {
+    justify-self: center;
+  }
+}
+
+.profile__avatar:hover {
+  transform: scale(1.04);
+}

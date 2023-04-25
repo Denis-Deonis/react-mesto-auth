@@ -1,0 +1,33 @@
+.header {
+  width: 100%;
+  margin-top: 45px;
+  border-bottom:  1px solid rgba(84, 84, 84, .7);
+  position: relative;
+}
+
+.header::after {
+  display: none;
+  position: absolute;
+  left: -18px;
+  content: "";
+  width: 318px;
+  border-bottom:  1px solid rgba(84, 84, 84, .7);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 520px) {
+  .header {
+    margin-top: 28px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .header {
+    max-width: 320px;
+    border-bottom: none;
+  }
+  .header::after {
+    display: block;
+  }
+}
