@@ -1,5 +1,5 @@
 {
-  "name": "codespaces-react",
+  "name": "react-mesto-auth",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,16 +9,16 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "5.0.1",
     "web-vitals": "^3.1.0"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -38,7 +38,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://denis-deonis.github.io/mesto-react/",
+  "homepage": "https://github.com/Denis-Deonis/react-mesto-auth",
   "devDependencies": {
     "gh-pages": "^5.0.0"
   }
