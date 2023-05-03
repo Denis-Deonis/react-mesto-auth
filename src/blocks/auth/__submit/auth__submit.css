@@ -1,0 +1,11 @@
+.auth__submit {
+  width: 100%;
+  min-height: 50px;
+  margin: 216px 0 0;
+  font-size: 18px;
+  line-height: 21.78px;
+  border: none;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #000;
+}
