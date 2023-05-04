@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {SuccessIcon} from '../images/InfoToolTip/SuccessIcon.svg';
 import {FailIcon} from '../images/InfoToolTip/FailIcon.svg';
 

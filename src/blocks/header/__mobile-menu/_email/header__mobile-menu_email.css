@@ -1,0 +1,11 @@
+.header__mobile-menu_email {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.125rem;
+  line-height: 1.375rem;
+  color: #fff;
+  align-self: center;
+  margin: 0 0 18px;
+  padding: 0;
+}

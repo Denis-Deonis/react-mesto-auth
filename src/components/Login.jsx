@@ -1,5 +1,5 @@
-import React from "react";
-import AuthWithForm from "./AuthWithForm";
+import React from 'react';
+import AuthWithForm from './AuthWithForm';
 
 export default function Login(props) {
 

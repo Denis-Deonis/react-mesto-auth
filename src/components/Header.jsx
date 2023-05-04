@@ -1,6 +1,6 @@
 import logo from '../images/header/logo.svg';
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 export default function Header(props) {
   return(
@@ -10,7 +10,7 @@ export default function Header(props) {
         <p className="header__text">{props.email}</p>
         <Link
           to={props.route}
-          className="header__link link-opacity"
+          className="header__link"
           type="button"
           onClick={props.onClick}
         >
