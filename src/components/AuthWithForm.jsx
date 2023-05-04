@@ -1,24 +1,31 @@
-//import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import ErrorMessage from './ErrorMessage';
+import React, { useState } from 'react';
 import { useInput } from '../hooks/input.hook';
+import ErrorMessage from './ErrorMessage';
+import { Link } from 'react-router-dom';
+
+
+
 
 export default function AuthWithForm(props) {
-  const email = useInput('', { isEmail: true })
-  const password = useInput('')
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const emailErrorMessage = useInput('', { isEmail: true })
+  const passwordErrorMessage = useInput('')
 
   function handleSubmit(evt) {
     evt.preventDefault()
     props.onSubmit(email, password)
   }
 
-  // function handleEmailChange(evt) {
-  //   setEmail(evt.target.value)
-  // }
+  function handleEmailChange(evt) {
+    setEmail(evt.target.value)
+  }
 
-  // function handlePasswordChange(evt) {
-  //   setPassword(evt.target.value)
-  // }
+  function handlePasswordChange(evt) {
+    setPassword(evt.target.value)
+  }
 
   return(
     <section className="auth">
@@ -30,25 +37,25 @@ export default function AuthWithForm(props) {
           name="email"
           type="email"
           required
-          // value={email || ""}
-          // onChange={handleEmailChange}
+          value={email || ""}
+          onChange={handleEmailChange}
           autoComplete="off"
-          {...email}
+          // {...email}
         />
-        <ErrorMessage message={email.isValid.errorMessage} />
+        <ErrorMessage message={emailErrorMessage.isValid.errorMessage} />
         <input
           className="auth__input"
           placeholder="Пароль"
           name="password"
           type="password"
           required
-          // value={password || ""}
-          // onChange={handlePasswordChange}
+          value={password || ""}
+          onChange={handlePasswordChange}
           autoComplete="off"
           minLength="4"
-          {...password}
+          // {...password}
         />
-        <ErrorMessage message={password.isValid.errorMessage} />
+        <ErrorMessage message={passwordErrorMessage.isValid.errorMessage} />
         <button
           className={`auth__submit ${
             !email.isValid.result || !password.isValid.result
