@@ -24,6 +24,9 @@
 @import url(./blocks/header/__mobile-menu/header__mobile-menu.css);
 @import url(./blocks/header/__mobile-menu/_opened/header__mobile-menu_opened.css);
 @import url(./blocks/header/__mobile-menu/__exit/header__mobile-menu_exit.css);
+
+@import url(./blocks/header/__user-info/header__user-info.css);
+@import url(./blocks/header/__email/header__email.css);
 /* </header> */
 
 

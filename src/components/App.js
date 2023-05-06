@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Route, Switch, Redirect, useHistory} from 'react-router-dom';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import api from '../utils/api';
 import Header from './Header';
@@ -9,6 +10,11 @@ import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import PopupConfirmation from './PopupConfirmation';
+import * as auth from '../utils/auth';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
+import InfoToolTip from './InfoToolTip';
 
 
 
@@ -23,6 +29,13 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [deletedCard, setDeletedCard] = useState({});
+
+  const history = useHistory();
+  const [isInfoToolTipOpen, setInfoToolTipOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 
   useEffect(() => {
@@ -40,7 +53,8 @@ function App() {
       isEditAvatarPopupOpen ||
       isEditProfilePopupOpen ||
       isAddPlacePopupOpen ||
-      selectedCard
+      selectedCard||
+      isInfoToolTipOpen
     ) {
       function handleEsc(evt) {
         evt.key === "Escape" && closeAllPopups();
@@ -58,6 +72,7 @@ function App() {
     isEditProfilePopupOpen,
     isAddPlacePopupOpen,
     selectedCard,
+    isInfoToolTipOpen
   ]);
 
 
@@ -67,6 +82,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsConfirmationPopupOpen(false);
+    setInfoToolTipOpen(false);
   }
 
   function closeByOverlay(evt) { (evt.target === evt.currentTarget) && closeAllPopups(); }
@@ -107,16 +123,13 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((user) =>  user._id === currentUser._id);
-
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
         setCards((state) =>
           state.map((user) => (user._id === card._id ? newCard : user))
         );
       })
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`);
-      });
+      .catch((err) => console.log(`Ошибка: ${err}`))
   }
 
   function handleCardDelete(card) {
@@ -131,11 +144,85 @@ function App() {
   }
 
 
+
+  function handleRegisterSubmit(email, password) {
+    auth.register(email, password)
+      .then(() => {
+        setInfoToolTipOpen(true)
+        setIsSuccess(true)
+        history.push("/sign-in")
+      })
+      .catch((error) => {
+        console.log(`Ошибка: ${error}`)
+        setInfoToolTipOpen(true)
+        setIsSuccess(false)
+      })
+  }
+  
+  function handleLoginSubmit(email, password) {
+    auth.login(email, password)
+      .then((res) => {
+        localStorage.setItem("jwt", res.token)
+        setIsLoggedIn(true)
+        setEmail(email)
+        history.push("/")
+      })
+      .catch((error) => console.log(`Ошибка: ${error}`))
+  }
+
+  function handleSignOut() {
+    localStorage.removeItem("jwt")
+    setIsLoggedIn(false)
+    setIsMobileMenuOpen(false)
+    history.push("/sign-in")
+    setIsMobileMenuOpen(false)
+  }
+
+  function handleClickOpenMobileMenu() {
+    if (isLoggedIn) {
+      setIsMobileMenuOpen(!isMobileMenuOpen)
+    }
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header />
+          <Header
+            email={email}
+            onSignOut={handleSignOut}
+            isMobileMenuOpen={isMobileMenuOpen}
+            handleClickOpenMobileMenu={handleClickOpenMobileMenu}
+            isLoggedIn={isLoggedIn}
+          />
+
+        <Switch>
+          <ProtectedRoute
+              exact
+              path="/"
+              isLoggedIn={isLoggedIn}
+              onEditAvatar={setIsEditAvatarPopupOpen}
+              onEditProfile={setIsEditProfilePopupOpen}
+              onConfirmationPopup={setIsConfirmationPopupOpen}
+              onAddPlace={setIsAddPlacePopupOpen}
+              onCardClick={setSelectedCard}
+              onCardLike={handleCardLike}
+              onDeletedCard={setDeletedCard}
+              cards={cards}
+              component={Main}
+              isLoading={isLoading}
+            />
+            <Route path="/sign-in">
+              <Login onLogin={handleLoginSubmit} />
+            </Route>
+            <Route path="/sign-up">
+              <Register onRegister={handleRegisterSubmit} />
+            </Route>
+            <Route>
+              {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            </Route>
+
+        </Switch>
 
           <Main
             cards={cards}

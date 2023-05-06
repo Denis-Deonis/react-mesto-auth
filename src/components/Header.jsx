@@ -1,26 +1,52 @@
 import logo from '../images/header/logo.svg';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import HeaderMobileMenu from './HeaderMobileMenu';
 
+
 export default function Header(props) {
+  const location = useLocation();
   return(
     <>
       <header className='header header__container'>
         <a href="foo" target="_self">
           <img className='header__logo' src={logo} alt='логотип сервиса Mesto' />
         </a>        
-        <nav className="header__auth">
-          <p className="header__text">{props.email}</p>
-          <Link
-            to={props.route}
-            className="header__link"
-            type="button"
-            onClick={props.onClick}
-          >
-            {props.title}
+        {location.pathname === "/sign-in" && (
+          <Link to="/sign-up" className="header__link">
+            Регистрация
           </Link>
-        </nav>
+        )}
+        {location.pathname === "/sign-up" && (
+          <Link to="/sign-in" className="header__link">
+            Войти
+          </Link>
+        )}
+        {location.pathname === "/" && (
+          <div className="header__user-info">
+            <p className="header__email">{props.email}</p>
+            <Link
+              to="/sign-in"
+              className="header__link"
+              onClick={props.onSignOut}
+            >
+              Выйти
+            </Link>
+          </div>
+        )}
+
+        {props.isLoggedIn && (
+          <button
+            className="header__burger"
+            type="button"
+            onClick={props.handleClickOpenMobileMenu}
+            style={{
+              backgroundImage: `url(${
+                props.isMobileMenuOpen ? closeMenuIcon : burgerMenu
+              })`,
+            }}
+          />
+        )}
       </header>
       <HeaderMobileMenu
         email={props.email}

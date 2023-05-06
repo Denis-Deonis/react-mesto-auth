@@ -1,8 +1,8 @@
-import pen from '../images/profile/pen.svg'
-
+import pen from '../images/profile/pen.svg';
 import React from 'react';
 import Card from './Card';
 import CurrentUserContext from '../contexts/CurrentUserContext';
+import Loader from './Loader';
 
 
 export default function Main(props) {
@@ -10,6 +10,7 @@ export default function Main(props) {
 
   return (
     <main className="content">
+      {props.isLoading && <Loader />}
       <section className="profile">
         <div className="profile__wrapper-relative">
           <img
