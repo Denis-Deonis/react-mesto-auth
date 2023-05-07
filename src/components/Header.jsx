@@ -2,6 +2,8 @@ import logo from '../images/header/logo.svg';
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import HeaderMobileMenu from './HeaderMobileMenu';
+import closeMenuIcon from '../images/header/Close-IconMobile.png';
+import burgerMenu from '../images/header/burgerMenu.svg';
 
 
 export default function Header(props) {

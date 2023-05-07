@@ -97,11 +97,6 @@
 @import url(./blocks/popup/__save/_disabled/popup__save_disabled.css);
 
 
-
-@import url(./blocks/popup/__avatar-container/popup__avatar-container.css);
-@import url(./blocks/popup/__title/_margin/popup__title_margin.css);
-@import url(./blocks/popup/__confirmation-container/popup__confirmation-container.css);
-
 @import url(./blocks/popup/__tooltip/popup__tooltip.css);
 @import url(./blocks/popup/__tooltip/_image/popup__tooltip_image.css);
 @import url(./blocks/popup/__tooltip/_message/popup__tooltip_message.css);

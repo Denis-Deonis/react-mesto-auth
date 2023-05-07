@@ -1,6 +1,6 @@
 import React from 'react';
-import {SuccessIcon} from '../images/InfoToolTip/SuccessIcon.svg';
-import {FailIcon} from '../images/InfoToolTip/FailIcon.svg';
+import SuccessIcon from '../images/InfoToolTip/SuccessIcon.svg';
+import FailIcon from '../images/InfoToolTip/FailIcon.svg';
 
 export default function InfoToolTip(props) {
   return (

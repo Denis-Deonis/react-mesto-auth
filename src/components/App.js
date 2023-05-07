@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, Redirect, useHistory} from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/auth.hook';
+//import { Route, Switch, Redirect, useHistory} from 'react-router-dom';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import api from '../utils/api';
 import Header from './Header';
-import Main from './Main';
+//import Main from './Main';
 import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import PopupConfirmation from './PopupConfirmation';
-import * as auth from '../utils/auth';
+//import * as auth from '../utils/auth';
 import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
@@ -30,13 +32,16 @@ function App() {
   const [cards, setCards] = useState([]);
   const [deletedCard, setDeletedCard] = useState({});
 
-  const history = useHistory();
-  const [isInfoToolTipOpen, setInfoToolTipOpen] = useState(false);
+  //const history = useHistory();
+  const navigate = useNavigate();
+  const { loginUser, registerUser, getToken, error } = useAuth();
+
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [emailName, setEmailName] = useState(null)
+  const [isInfoToolTipOpen, setInfoToolTipOpen] = useState(false);
 
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()]).then(([user, cards]) => {
@@ -75,6 +80,21 @@ function App() {
     isInfoToolTipOpen
   ]);
 
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt')
+    if (jwt) {
+      getToken(jwt)
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true)
+            setEmailName(res.data.email)
+          }
+        })
+        .catch(() => {
+          console.error('Error: ' + error)
+        })
+    }
+  }, [])
 
   function closeAllPopups() {
     setSelectedCard(null);
@@ -144,39 +164,74 @@ function App() {
   }
 
 
-
   function handleRegisterSubmit(email, password) {
-    auth.register(email, password)
+    registerUser(email, password)
       .then(() => {
-        setInfoToolTipOpen(true)
         setIsSuccess(true)
-        history.push("/sign-in")
-      })
-      .catch((error) => {
-        console.log(`Ошибка: ${error}`)
         setInfoToolTipOpen(true)
+        navigate('/sign-in')
+      })
+      .catch(() => {
         setIsSuccess(false)
+        setInfoToolTipOpen(true)
+        console.error('Error: ' + error)
       })
+      .finally(setInfoToolTipOpen(true))
   }
-  
+
   function handleLoginSubmit(email, password) {
-    auth.login(email, password)
+    loginUser(email, password)
       .then((res) => {
-        localStorage.setItem("jwt", res.token)
+        localStorage.setItem('jwt', res.token)
         setIsLoggedIn(true)
-        setEmail(email)
-        history.push("/")
+        setEmailName(email)
+        navigate('/')
       })
-      .catch((error) => console.log(`Ошибка: ${error}`))
+      .catch(() => {
+        console.error('Error: ' + error)
+      })
   }
 
   function handleSignOut() {
-    localStorage.removeItem("jwt")
     setIsLoggedIn(false)
+    setEmailName(null)
     setIsMobileMenuOpen(false)
-    history.push("/sign-in")
-    setIsMobileMenuOpen(false)
+    navigate('/sign-in')
+    localStorage.removeItem('jwt')
   }
+
+  // function handleRegisterSubmit(email, password) {
+  //   auth.register(email, password)
+  //     .then(() => {
+  //       setInfoToolTipOpen(true)
+  //       setIsSuccess(true)
+  //       history.push("/sign-in")
+  //     })
+  //     .catch((error) => {
+  //       console.log(`Ошибка: ${error}`)
+  //       setInfoToolTipOpen(true)
+  //       setIsSuccess(false)
+  //     })
+  // }
+  
+  // function handleLoginSubmit(email, password) {
+  //   auth.login(email, password)
+  //     .then((res) => {
+  //       localStorage.setItem("jwt", res.token)
+  //       setIsLoggedIn(true)
+  //       setEmail(email)
+  //       history.push("/")
+  //     })
+  //     .catch((error) => console.log(`Ошибка: ${error}`))
+  // }
+
+  // function handleSignOut() {
+  //   localStorage.removeItem("jwt")
+  //   setIsLoggedIn(false)
+  //   setIsMobileMenuOpen(false)
+  //   history.push("/sign-in")
+  //   setIsMobileMenuOpen(false)
+  // }
 
   function handleClickOpenMobileMenu() {
     if (isLoggedIn) {
@@ -189,28 +244,74 @@ function App() {
       <div className="page">
         <div className="page__container">
           <Header
-            email={email}
+            email={emailName}
             onSignOut={handleSignOut}
             isMobileMenuOpen={isMobileMenuOpen}
             handleClickOpenMobileMenu={handleClickOpenMobileMenu}
             isLoggedIn={isLoggedIn}
           />
 
-        <Switch>
+<Routes>
+
+          <Route
+            exact
+            path="/"
+            element={
+              <>
+                {/* <Header
+                  title="Выйти"
+                  email={emailName}
+                  onClick={onSignOut}
+                  route=""
+                /> */}
+                <ProtectedRoute
+                  cards={cards}
+                  onCardClick={setSelectedCard}
+                  onEditProfile={setIsEditProfilePopupOpen}
+                  onAddPlace={setIsAddPlacePopupOpen}
+                  onEditAvatar={setIsEditAvatarPopupOpen}
+                  onCardLike={handleCardLike}
+                  onConfirmationPopup={setIsConfirmationPopupOpen}
+                  onDeletedCard={setDeletedCard}
+
+                  isLoading={isLoading}
+                  isLoggedIn={isLoggedIn}
+                />
+                <Footer />
+              </>
+            }
+          />
+
+            <Route path="/sign-in">
+              <Login onLogin={handleLoginSubmit} />
+            </Route>
+            <Route path="/sign-up">
+              <Register onRegister={handleRegisterSubmit} />
+            </Route>
+
+
+          <Route
+            path="*"
+            element={<Navigate to={isLoggedIn ? '/' : '/sign-in'} />}
+          />
+        </Routes>
+
+        {/* <Switch>
           <ProtectedRoute
-              exact
-              path="/"
-              isLoggedIn={isLoggedIn}
-              onEditAvatar={setIsEditAvatarPopupOpen}
-              onEditProfile={setIsEditProfilePopupOpen}
-              onConfirmationPopup={setIsConfirmationPopupOpen}
-              onAddPlace={setIsAddPlacePopupOpen}
-              onCardClick={setSelectedCard}
-              onCardLike={handleCardLike}
-              onDeletedCard={setDeletedCard}
-              cards={cards}
-              component={Main}
-              isLoading={isLoading}
+            exact
+            path="/"
+            cards={cards}
+            onCardClick={setSelectedCard}
+            onEditProfile={setIsEditProfilePopupOpen}
+            onAddPlace={setIsAddPlacePopupOpen}
+            onEditAvatar={setIsEditAvatarPopupOpen}
+            onCardLike={handleCardLike}
+            onConfirmationPopup={setIsConfirmationPopupOpen}
+            onDeletedCard={setDeletedCard}
+
+            isLoading={isLoading}
+            isLoggedIn={isLoggedIn}
+            component={Main}            
             />
             <Route path="/sign-in">
               <Login onLogin={handleLoginSubmit} />
@@ -222,9 +323,9 @@ function App() {
               {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
             </Route>
 
-        </Switch>
+        </Switch> */}
 
-          <Main
+          {/* <Main
             cards={cards}
             onCardClick={setSelectedCard}
             onEditProfile={setIsEditProfilePopupOpen}
@@ -233,6 +334,12 @@ function App() {
             onCardLike={handleCardLike}
             onConfirmationPopup={setIsConfirmationPopupOpen}
             onDeletedCard={setDeletedCard}
+          /> */}
+
+          <InfoToolTip
+            isOpen={isInfoToolTipOpen}
+            onClose={closeAllPopups}
+            isSuccess={isSuccess}
           />
 
           <Footer />
