@@ -9,7 +9,7 @@ export default function InfoToolTip(props) {
         <button
           title="Закрыть"
           type="button"
-          className="popup__close"
+          className="popup__close-button"
           onClick={props.onClose}
         />
       <div className="popup__tooltip">

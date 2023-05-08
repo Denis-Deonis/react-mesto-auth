@@ -10,7 +10,11 @@ export default function Header(props) {
   const location = useLocation();
   return(
     <>
-
+      <HeaderMobileMenu
+        email={props.email}
+        handleLogout={props.onSignOut}
+        isMobileMenuOpen={props.isMobileMenuOpen}
+      />
       <header className='header header__container'>
 
         <a href="foo" target="_self">
@@ -18,14 +22,18 @@ export default function Header(props) {
         </a>  
 
         {location.pathname === "/sign-in" && (
-          <Link to="/sign-up" className="header__link">
-            Регистрация
-          </Link>
+          <div className="header__user-info">
+            <Link to="/sign-up" className="header__link">
+              Регистрация
+            </Link>
+          </div>
         )}
         {location.pathname === "/sign-up" && (
-          <Link to="/sign-in" className="header__link">
-            Войти
-          </Link>
+          <div className="header__user-info">
+            <Link to="/sign-in" className="header__link">
+              Войти
+            </Link>
+          </div>
         )}
         {location.pathname === "/" && (
           <div className="header__user-info">
@@ -52,11 +60,6 @@ export default function Header(props) {
             }}
           />
         )}
-      <HeaderMobileMenu
-        email={props.email}
-        handleLogout={props.onSignOut}
-        isMobileMenuOpen={props.isMobileMenuOpen}
-      />
       </header>
     </>
   )

@@ -30,7 +30,7 @@ export default function Register(props) {
           type="password"
           placeholder="Пароль"
           autoComplete="on"
-          minLength="5"
+          minLength="4"
           required
           {...password}
         />
