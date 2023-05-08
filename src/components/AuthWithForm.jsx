@@ -8,11 +8,11 @@ import { Link } from 'react-router-dom';
 
 export default function AuthWithForm(props) {
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useInput('', { isEmail: true });
   const [password, setPassword] = useState('');
 
-  const emailErrorMessage = useInput('', { isEmail: true })
-  const passwordErrorMessage = useInput('')
+  const emailErrorMessage = useInput('', { isEmail: true });
+  const passwordErrorMessage = useInput('');
 
   function handleSubmit(evt) {
     evt.preventDefault()
@@ -40,7 +40,7 @@ export default function AuthWithForm(props) {
           value={email || ""}
           onChange={handleEmailChange}
           autoComplete="off"
-          // {...email}
+          {...email}
         />
         <ErrorMessage message={emailErrorMessage.isValid.errorMessage} />
         <input
@@ -53,7 +53,7 @@ export default function AuthWithForm(props) {
           onChange={handlePasswordChange}
           autoComplete="off"
           minLength="4"
-          // {...password}
+          {...password}
         />
         <ErrorMessage message={passwordErrorMessage.isValid.errorMessage} />
         <button

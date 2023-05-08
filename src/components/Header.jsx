@@ -10,10 +10,13 @@ export default function Header(props) {
   const location = useLocation();
   return(
     <>
+
       <header className='header header__container'>
+
         <a href="foo" target="_self">
           <img className='header__logo' src={logo} alt='логотип сервиса Mesto' />
-        </a>        
+        </a>  
+
         {location.pathname === "/sign-in" && (
           <Link to="/sign-up" className="header__link">
             Регистрация
@@ -49,12 +52,12 @@ export default function Header(props) {
             }}
           />
         )}
-      </header>
       <HeaderMobileMenu
         email={props.email}
         handleLogout={props.onSignOut}
         isMobileMenuOpen={props.isMobileMenuOpen}
       />
+      </header>
     </>
   )
 }

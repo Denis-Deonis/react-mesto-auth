@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/auth.hook';
-//import { Route, Switch, Redirect, useHistory} from 'react-router-dom';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import api from '../utils/api';
 import Header from './Header';
-//import Main from './Main';
+import Main from './Main';
 import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 import AddPlacePopup from './AddPlacePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import PopupConfirmation from './PopupConfirmation';
-//import * as auth from '../utils/auth';
 import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
@@ -200,38 +198,6 @@ function App() {
     localStorage.removeItem('jwt')
   }
 
-  // function handleRegisterSubmit(email, password) {
-  //   auth.register(email, password)
-  //     .then(() => {
-  //       setInfoToolTipOpen(true)
-  //       setIsSuccess(true)
-  //       history.push("/sign-in")
-  //     })
-  //     .catch((error) => {
-  //       console.log(`Ошибка: ${error}`)
-  //       setInfoToolTipOpen(true)
-  //       setIsSuccess(false)
-  //     })
-  // }
-  
-  // function handleLoginSubmit(email, password) {
-  //   auth.login(email, password)
-  //     .then((res) => {
-  //       localStorage.setItem("jwt", res.token)
-  //       setIsLoggedIn(true)
-  //       setEmail(email)
-  //       history.push("/")
-  //     })
-  //     .catch((error) => console.log(`Ошибка: ${error}`))
-  // }
-
-  // function handleSignOut() {
-  //   localStorage.removeItem("jwt")
-  //   setIsLoggedIn(false)
-  //   setIsMobileMenuOpen(false)
-  //   history.push("/sign-in")
-  //   setIsMobileMenuOpen(false)
-  // }
 
   function handleClickOpenMobileMenu() {
     if (isLoggedIn) {
@@ -243,13 +209,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header
-            email={emailName}
-            onSignOut={handleSignOut}
-            isMobileMenuOpen={isMobileMenuOpen}
-            handleClickOpenMobileMenu={handleClickOpenMobileMenu}
-            isLoggedIn={isLoggedIn}
-          />
+
 
 <Routes>
 
@@ -258,13 +218,15 @@ function App() {
             path="/"
             element={
               <>
-                {/* <Header
-                  title="Выйти"
+                <Header
                   email={emailName}
-                  onClick={onSignOut}
-                  route=""
-                /> */}
+                  onSignOut={handleSignOut}
+                  isMobileMenuOpen={isMobileMenuOpen}
+                  handleClickOpenMobileMenu={handleClickOpenMobileMenu}
+                  isLoggedIn={isLoggedIn}
+                />
                 <ProtectedRoute
+                  component={Main}
                   cards={cards}
                   onCardClick={setSelectedCard}
                   onEditProfile={setIsEditProfilePopupOpen}
@@ -282,13 +244,36 @@ function App() {
             }
           />
 
-            <Route path="/sign-in">
-              <Login onLogin={handleLoginSubmit} />
-            </Route>
-            <Route path="/sign-up">
-              <Register onRegister={handleRegisterSubmit} />
-            </Route>
-
+          <Route
+            path="/sign-in"
+            element={
+              <>
+                <Header
+                  email={emailName}
+                  onSignOut={handleSignOut}
+                  isMobileMenuOpen={isMobileMenuOpen}
+                  handleClickOpenMobileMenu={handleClickOpenMobileMenu}
+                  isLoggedIn={isLoggedIn}
+                />
+                <Login onLogin={handleLoginSubmit} />
+              </>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <>
+                <Header
+                  email={emailName}
+                  onSignOut={handleSignOut}
+                  isMobileMenuOpen={isMobileMenuOpen}
+                  handleClickOpenMobileMenu={handleClickOpenMobileMenu}
+                  isLoggedIn={isLoggedIn}
+                />
+                <Register onRegister={handleRegisterSubmit} />
+              </>
+            }
+          />
 
           <Route
             path="*"
@@ -296,45 +281,6 @@ function App() {
           />
         </Routes>
 
-        {/* <Switch>
-          <ProtectedRoute
-            exact
-            path="/"
-            cards={cards}
-            onCardClick={setSelectedCard}
-            onEditProfile={setIsEditProfilePopupOpen}
-            onAddPlace={setIsAddPlacePopupOpen}
-            onEditAvatar={setIsEditAvatarPopupOpen}
-            onCardLike={handleCardLike}
-            onConfirmationPopup={setIsConfirmationPopupOpen}
-            onDeletedCard={setDeletedCard}
-
-            isLoading={isLoading}
-            isLoggedIn={isLoggedIn}
-            component={Main}            
-            />
-            <Route path="/sign-in">
-              <Login onLogin={handleLoginSubmit} />
-            </Route>
-            <Route path="/sign-up">
-              <Register onRegister={handleRegisterSubmit} />
-            </Route>
-            <Route>
-              {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
-            </Route>
-
-        </Switch> */}
-
-          {/* <Main
-            cards={cards}
-            onCardClick={setSelectedCard}
-            onEditProfile={setIsEditProfilePopupOpen}
-            onAddPlace={setIsAddPlacePopupOpen}
-            onEditAvatar={setIsEditAvatarPopupOpen}
-            onCardLike={handleCardLike}
-            onConfirmationPopup={setIsConfirmationPopupOpen}
-            onDeletedCard={setDeletedCard}
-          /> */}
 
           <InfoToolTip
             isOpen={isInfoToolTipOpen}
