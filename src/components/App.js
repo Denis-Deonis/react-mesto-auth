@@ -17,7 +17,6 @@ import Login from './Login';
 import InfoToolTip from './InfoToolTip';
 
 
-
 function App() {
 
   const [selectedCard, setSelectedCard] = useState(null);
@@ -30,7 +29,6 @@ function App() {
   const [cards, setCards] = useState([]);
   const [deletedCard, setDeletedCard] = useState({});
 
-  //const history = useHistory();
   const navigate = useNavigate();
   const { loginUser, registerUser, getToken, error } = useAuth();
 
