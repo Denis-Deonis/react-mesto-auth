@@ -1,31 +1,27 @@
 import PopupWithForm from './PopupWithForm';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useInput } from '../hooks/input.hook'
+import ErrorMessage from './ErrorMessage'
 
 export default function AddPlacePopup(props) {
 
-  const [placeName, setPlaceName] = useState("");
-  const [placeLink, setPlaceLink] = useState("");
+  const name = useInput('');
+  const url = useInput('', { isUrl: true });
 
-  useEffect( ()=> {
-    setPlaceName("");
-    setPlaceLink("");
-  }, [props.isOpen]);
+  useEffect(() => {
+    name.setValue('')
+    url.setValue('')
+    name.clearErrorMessage()
+    url.clearErrorMessage()
+  }, [ props.isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     props.onAddPlace({
-        name: placeName,
-        link: placeLink,
+      name: name.value, link: url.value 
     });
 }
 
-function handleChangePlaceName(evt) {
-    setPlaceName(evt.target.value);
-}
-
-function handleChangePlaceLink(evt) {
-    setPlaceLink(evt.target.value);
-}
 
   return (
     <PopupWithForm
@@ -48,10 +44,9 @@ function handleChangePlaceLink(evt) {
           minLength="2"
           maxLength="30"
           id="title"
-          value={placeName}
-          onChange={handleChangePlaceName}
+          {...name}
         />
-        <span className="title-error error"></span>
+        <ErrorMessage message={name.isValid.errorMessage} />
       </label>
       <label className="popup__label">
         <input
@@ -61,10 +56,9 @@ function handleChangePlaceLink(evt) {
           placeholder="Ссылка на картинку"
           required
           id="link"
-          value={placeLink}
-          onChange={handleChangePlaceLink}
+          {...url}
         />
-        <span className="link-error error"></span>
+        <ErrorMessage message={url.isValid.errorMessage} />
       </label>
     </PopupWithForm>
   );
