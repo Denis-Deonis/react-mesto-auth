@@ -188,9 +188,7 @@ function App() {
         setEmailName(email);
         navigate("/");
       })
-      .catch(() => {
-        console.error("Error: " + error);
-      });
+      .catch((error) => console.log(`Ошибка: ${error}`))
   }
 
   function handleSignOut() {
@@ -263,7 +261,7 @@ function App() {
             isSuccess={isSuccess}
           />
 
-          <Footer />
+          {isLoggedIn && <Footer /> }
 
           <ImagePopup
             card={selectedCard}

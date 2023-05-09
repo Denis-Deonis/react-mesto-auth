@@ -3,7 +3,7 @@ import React from "react";
 export default function PopupWithForm(props) {
   return (
     <div
-      className={`popup popup_type_${props.name} ${
+      className={`popup  ${
         props.isOpen && "popup_opened"
       }`}
       onClick={props.onCloseOverlay}
