@@ -3,7 +3,7 @@ import React from 'react';
 export default function ImagePopup(props) {
   return (
     <div
-      className={`popup popup_type_image popup_img ${props.card &&
+      className={`popup  popup_image-overlay ${props.card &&
         "popup_opened"}`}
       onClick={props.onCloseOverlay}
     >

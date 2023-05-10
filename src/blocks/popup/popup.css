@@ -13,7 +13,3 @@
   opacity: 0;
   transition:visibility .5s, opacity .5s linear;
 }
-
-.popup_img {
-  transition:visibility .0s, opacity .0s linear;
-}

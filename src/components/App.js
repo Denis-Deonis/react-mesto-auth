@@ -28,7 +28,7 @@ function App() {
   const [deletedCard, setDeletedCard] = useState({});
 
   const navigate = useNavigate();
-  const { loginUser, registerUser, getToken, error } = useAuth();
+  const { loginUser, registerUser, getToken } = useAuth();
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -77,6 +77,12 @@ function App() {
   ]);
 
   useEffect(() => {
+    if (isLoggedIn === true) {
+      navigate('/')
+    }
+  }, [isLoggedIn, navigate]);
+
+  useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       getToken(jwt)
@@ -86,11 +92,9 @@ function App() {
             setEmailName(res.data.email);
           }
         })
-        .catch(() => {
-          console.error("Error: " + error);
-        });
+        .catch((error) => console.log(`Ошибка: ${error}`))
     }
-  }, []);
+  }, [getToken]);
 
   function closeAllPopups() {
     setSelectedCard(null);
@@ -172,10 +176,10 @@ function App() {
         setInfoToolTipOpen(true);
         navigate("/sign-in");
       })
-      .catch(() => {
+      .catch((error) => {
         setIsSuccess(false);
         setInfoToolTipOpen(true);
-        console.error("Error: " + error);
+        console.log(`Ошибка: ${error}`);
       })
       .finally(setInfoToolTipOpen(true));
   }

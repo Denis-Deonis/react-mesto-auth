@@ -99,7 +99,7 @@
 @import url(./blocks/popup/__input/_type_error/popup__input_type_error.css);
 @import url(./blocks/popup/__save/_disabled/popup__save_disabled.css);
 
-
+@import url(./blocks/popup/__image-overlay/popup__image-overlay.css);
 @import url(./blocks/popup/__tooltip/popup__tooltip.css);
 @import url(./blocks/popup/__tooltip/_image/popup__tooltip_image.css);
 @import url(./blocks/popup/__tooltip/_message/popup__tooltip_message.css);
