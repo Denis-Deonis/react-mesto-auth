@@ -1,48 +1,55 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useInput } from '../hooks/input.hook';
 import ErrorMessage from './ErrorMessage';
 
 
 export default function Login(props) {
 
-  const email = useInput('', { isEmail: true });
-  const password = useInput('');
+  const {values, onChange, resetForm, errors, isValid} = useInput();
+
+  useEffect(() => {
+    resetForm();
+  }, [ props.isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault()
-    props.onLogin(email.value, password.value)
+    props.onLogin({email:values.email, password: values.password})
   }
 
   return (
     <section className="auth">
       <h2 className="auth__title">Вход</h2>
-      <form className="auth__form" onSubmit={handleSubmit}>
+      <form className="auth__form" onSubmit={handleSubmit} >
         <input
           className="auth__input"
+          name="email"
           type="email"
           placeholder="Email"
           required
-          {...email}
+          value={values.email || ""}
+          onChange={onChange}
         />
-        <ErrorMessage message={email.isValid.errorMessage} />
+        <ErrorMessage message={errors} />
         <input
           className="auth__input"
+          name="password"
           type="password"
           placeholder="Пароль"
           autoComplete="on"
           minLength="4"
           required
-          {...password}
+          value={values.password || ""}
+          onChange={onChange}
         />
-        <ErrorMessage message={password.isValid.errorMessage} />
+        <ErrorMessage message={errors} />
         <button
           className={`auth__submit ${
-            !email.isValid.result || !password.isValid.result
+            !isValid
               ? 'popup__save_disabled'
               : ''
           }`}
           type="submit"
-          disabled={!email.isValid.result || !password.isValid.result}
+          disabled={!isValid}
         >
           Войти
         </button>

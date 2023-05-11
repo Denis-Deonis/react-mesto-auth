@@ -25,30 +25,43 @@ const useValidation = () => {
     validate,
   }
 }
-export const useInput = (initialValue, validations = {}) => {
-  const [value, setValue] = useState(initialValue)
+const useInput = (initialValue, validations = {}) => {
+  const [values, setValues] = useState(initialValue);
+  const [isValid, setValid] = useState({ result: false, errorMessage: '' });
+  const [errors, setErrors] = useState({});
+
   const { validate } = useValidation()
-  const [isValid, setValid] = useState({ result: false, errorMessage: '' })
 
   const onChange = (e) => {
-    setValue(e.target.value)
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value })
     setValid(() => validate(e.target, validations))
-  }
-  const onBlur = (e) => {
-    setValid(() => validate(e.target, validations))
-  }
+    setErrors({ ...errors, [name]: e.target.validationMessage });
+  };
 
   const clearErrorMessage = useCallback(
     (res = false) => setValid({ result: res, errorMessage: '' }),
     []
-  )
+  );
+
+  const resetForm = useCallback(
+    (newValues = {}, newErrors = {}, newIsValid = false) => {
+      setValues(newValues);
+      clearErrorMessage(newErrors);
+      setValid(newIsValid);
+    },
+    [setValues, clearErrorMessage, setValid]
+  );
 
   return {
-    value,
-    setValue,
+    values,
+    setValues,
     onChange,
-    onBlur,
     isValid,
     clearErrorMessage,
+    resetForm,
+    errors
   }
 }
+
+export default useInput;

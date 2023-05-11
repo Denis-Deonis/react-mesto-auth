@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useInput } from '../hooks/input.hook';
 import ErrorMessage from './ErrorMessage';
 import { Link } from 'react-router-dom';
@@ -8,24 +8,34 @@ import { Link } from 'react-router-dom';
 
 export default function AuthWithForm(props) {
 
-  const [email, setEmail] = useInput('', { isEmail: true });
-  const [password, setPassword] = useState('');
+  // const [email, setEmail] = useInput('', { isEmail: true });
+  // const emailErrorMessage = useInput('', { isEmail: true });
+  // const passwordErrorMessage = useInput('');
 
-  const emailErrorMessage = useInput('', { isEmail: true });
-  const passwordErrorMessage = useInput('');
+  // const [password, setPassword] = useState('');  
+  // const [email, setEmail] = useState('');  
+
+
+  const {values, onChange, resetForm, errors,} = useInput();
+
+  useEffect(() => {
+    resetForm();
+  }, [ props.isOpen]);
+
+
 
   function handleSubmit(evt) {
     evt.preventDefault()
-    props.onSubmit(email, password)
+    props.onSubmit({email:values.email, password: values.password})
   }
 
-  function handleEmailChange(evt) {
-    setEmail(evt.target.value)
-  }
+  // function handleEmailChange(evt) {
+  //   setEmail(evt.target.value)
+  // }
 
-  function handlePasswordChange(evt) {
-    setPassword(evt.target.value)
-  }
+  // function handlePasswordChange(evt) {
+  //   setPassword(evt.target.value)
+  // }
 
   return(
     <section className="auth">
@@ -38,11 +48,10 @@ export default function AuthWithForm(props) {
           type="email"
           required
           value={email || ""}
-          onChange={handleEmailChange}
+          onChange={onChange}
           autoComplete="off"
-          {...email}
         />
-        <ErrorMessage message={emailErrorMessage.isValid.errorMessage} />
+        <ErrorMessage message={errors} />
         <input
           className="auth__input"
           placeholder="Пароль"
@@ -50,22 +59,21 @@ export default function AuthWithForm(props) {
           type="password"
           required
           value={password || ""}
-          onChange={handlePasswordChange}
+          onChange={onChange}
           autoComplete="off"
           minLength="4"
-          {...password}
         />
-        <ErrorMessage message={passwordErrorMessage.isValid.errorMessage} />
+        <ErrorMessage message={errors} />
         <button
           className={`auth__submit ${
-            !email.isValid.result || !password.isValid.result
+            !props.buttonDisabled
               ? 'popup__save_disabled'
               : ''
           }`}
           type="submit"
-          disabled={!email.isValid.result || !password.isValid.result}
+          disabled={!props.buttonDisabled}
         >
-          {props.isSubmitting ? "Сохранение..." : props.buttonText}
+          { props.buttonText}
         </button>
         <div className="auth__signup">
           <p className="auth__signup_text">

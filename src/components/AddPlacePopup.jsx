@@ -5,20 +5,16 @@ import ErrorMessage from './ErrorMessage'
 
 export default function AddPlacePopup(props) {
 
-  const name = useInput('');
-  const url = useInput('', { isUrl: true });
+  const {values, onChange, resetForm, errors, isValid} = useInput();
 
   useEffect(() => {
-    name.setValue('')
-    url.setValue('')
-    name.clearErrorMessage()
-    url.clearErrorMessage()
+    resetForm();
   }, [ props.isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     props.onAddPlace({
-      name: name.value, link: url.value 
+      name : values.name, link: values.link
     });
 }
 
@@ -33,6 +29,7 @@ export default function AddPlacePopup(props) {
       form={"newCard"}
       title={"Новое место"}
       buttonText={props.onLoading ? `Сохранение...` : `Сохранить`}
+      buttonDisabled={isValid}
     >
       <label className="popup__label">
         <input
@@ -44,9 +41,10 @@ export default function AddPlacePopup(props) {
           minLength="2"
           maxLength="30"
           id="title"
-          {...name}
+          value={values.name || ""}
+          onChange={onChange}
         />
-        <ErrorMessage message={name.isValid.errorMessage} />
+        <ErrorMessage message={errors} />
       </label>
       <label className="popup__label">
         <input
@@ -56,9 +54,10 @@ export default function AddPlacePopup(props) {
           placeholder="Ссылка на картинку"
           required
           id="link"
-          {...url}
+          value={values.link || ""}
+          onChange={onChange}
         />
-        <ErrorMessage message={url.isValid.errorMessage} />
+        <ErrorMessage message={errors} />
       </label>
     </PopupWithForm>
   );
