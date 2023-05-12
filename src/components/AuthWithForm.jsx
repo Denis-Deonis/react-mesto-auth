@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
-import { useInput } from '../hooks/input.hook';
-import ErrorMessage from './ErrorMessage';
 import { Link } from 'react-router-dom';
-
-
-
 
 export default function AuthWithForm(props) {
 
-  const [email, setEmail] = useInput('', { isEmail: true });
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
-  const emailErrorMessage = useInput('', { isEmail: true });
-  const passwordErrorMessage = useInput('');
 
   function handleSubmit(evt) {
     evt.preventDefault()
@@ -39,10 +32,9 @@ export default function AuthWithForm(props) {
           required
           value={email || ""}
           onChange={handleEmailChange}
-          autoComplete="off"
-          {...email}
+          autoComplete="off"          
         />
-        <ErrorMessage message={emailErrorMessage.isValid.errorMessage} />
+        
         <input
           className="auth__input"
           placeholder="Пароль"
@@ -53,17 +45,16 @@ export default function AuthWithForm(props) {
           onChange={handlePasswordChange}
           autoComplete="off"
           minLength="4"
-          {...password}
         />
-        <ErrorMessage message={passwordErrorMessage.isValid.errorMessage} />
+        
         <button
           className={`auth__submit ${
-            !email.isValid.result || !password.isValid.result
+            props.isSubmitting
               ? 'popup__save_disabled'
               : ''
           }`}
           type="submit"
-          disabled={!email.isValid.result || !password.isValid.result}
+          disabled={props.isSubmitting}
         >
           {props.isSubmitting ? "Сохранение..." : props.buttonText}
         </button>

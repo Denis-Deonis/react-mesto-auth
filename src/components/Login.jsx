@@ -1,16 +1,15 @@
 import React from 'react';
-import { useInput } from '../hooks/input.hook';
+import { useValidation } from "../hooks/validition.hook";
 import ErrorMessage from './ErrorMessage';
 
 
 export default function Login(props) {
 
-  const email = useInput('', { isEmail: true });
-  const password = useInput('');
+  const { values, handleChange, errors, isValid,  } =  useValidation();
 
   function handleSubmit(evt) {
     evt.preventDefault()
-    props.onLogin(email.value, password.value)
+    props.onLogin(values.email,  values.password ) 
   }
 
   return (
@@ -22,9 +21,10 @@ export default function Login(props) {
           type="email"
           placeholder="Email"
           required
-          {...email}
+          value={values.email}
+          onChange={handleChange}
         />
-        <ErrorMessage message={email.isValid.errorMessage} />
+        <ErrorMessage message={errors.email} />
         <input
           className="auth__input"
           type="password"
@@ -32,17 +32,18 @@ export default function Login(props) {
           autoComplete="on"
           minLength="4"
           required
-          {...password}
+          value={values.password}
+          onChange={handleChange}
         />
-        <ErrorMessage message={password.isValid.errorMessage} />
+        <ErrorMessage message={errors.password} />
         <button
           className={`auth__submit ${
-            !email.isValid.result || !password.isValid.result
+            !isValid
               ? 'popup__save_disabled'
               : ''
           }`}
           type="submit"
-          disabled={!email.isValid.result || !password.isValid.result}
+          disabled={!isValid}
         >
           Войти
         </button>

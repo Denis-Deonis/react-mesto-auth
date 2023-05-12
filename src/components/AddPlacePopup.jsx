@@ -1,25 +1,23 @@
 import PopupWithForm from './PopupWithForm';
 import React, { useEffect } from 'react';
-import { useInput } from '../hooks/input.hook'
+import { useValidation } from "../hooks/validition.hook";
 import ErrorMessage from './ErrorMessage'
 
 export default function AddPlacePopup(props) {
 
-  const name = useInput('');
-  const url = useInput('', { isUrl: true });
+  const { resetForm, values, handleChange, errors,   } =
+    useValidation()
 
   useEffect(() => {
-    name.setValue('')
-    url.setValue('')
-    name.clearErrorMessage()
-    url.clearErrorMessage()
-  }, [ props.isOpen]);
+    resetForm()
+  }, [props.isOpen, resetForm]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     props.onAddPlace({
-      name: name.value, link: url.value 
-    });
+      name: values.name,
+      link: values.link,
+    })
 }
 
 
@@ -44,9 +42,10 @@ export default function AddPlacePopup(props) {
           minLength="2"
           maxLength="30"
           id="title"
-          {...name}
+          value={values.name}
+          onChange={handleChange}
         />
-        <ErrorMessage message={name.isValid.errorMessage} />
+        <ErrorMessage message={errors.name} />
       </label>
       <label className="popup__label">
         <input
@@ -56,9 +55,10 @@ export default function AddPlacePopup(props) {
           placeholder="Ссылка на картинку"
           required
           id="link"
-          {...url}
+          value={values.link}
+          onChange={handleChange} 
         />
-        <ErrorMessage message={url.isValid.errorMessage} />
+        <ErrorMessage message={errors.link} />
       </label>
     </PopupWithForm>
   );
