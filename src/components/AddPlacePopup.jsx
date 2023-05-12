@@ -1,15 +1,16 @@
 import PopupWithForm from './PopupWithForm';
 import React, { useEffect } from 'react';
-import { useInput } from '../hooks/input.hook'
-import ErrorMessage from './ErrorMessage'
+import useValidation from '../hooks/validate.hook';
+import ErrorMessage from './ErrorMessage';
+
 
 export default function AddPlacePopup(props) {
 
-  const {values, onChange, resetForm, errors, isValid} = useInput();
+  const { values, handleChange, errors, isValid, resetForm } = useValidation();
 
   useEffect(() => {
     resetForm();
-  }, [ props.isOpen]);
+  }, [props.isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -42,7 +43,7 @@ export default function AddPlacePopup(props) {
           maxLength="30"
           id="title"
           value={values.name || ""}
-          onChange={onChange}
+          onChange={handleChange}
         />
         <ErrorMessage message={errors} />
       </label>
@@ -55,7 +56,7 @@ export default function AddPlacePopup(props) {
           required
           id="link"
           value={values.link || ""}
-          onChange={onChange}
+          onChange={handleChange}
         />
         <ErrorMessage message={errors} />
       </label>

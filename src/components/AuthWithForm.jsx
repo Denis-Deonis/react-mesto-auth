@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useInput } from '../hooks/input.hook';
+import useValidation from '../hooks/validate.hook';
 import ErrorMessage from './ErrorMessage';
 import { Link } from 'react-router-dom';
 
@@ -8,15 +8,11 @@ import { Link } from 'react-router-dom';
 
 export default function AuthWithForm(props) {
 
-  // const [email, setEmail] = useInput('', { isEmail: true });
-  // const emailErrorMessage = useInput('', { isEmail: true });
-  // const passwordErrorMessage = useInput('');
-
   // const [password, setPassword] = useState('');  
   // const [email, setEmail] = useState('');  
 
 
-  const {values, onChange, resetForm, errors,} = useInput();
+  const { values, handleChange, errors, resetForm } = useValidation();
 
   useEffect(() => {
     resetForm();
@@ -47,8 +43,8 @@ export default function AuthWithForm(props) {
           name="email"
           type="email"
           required
-          value={email || ""}
-          onChange={onChange}
+          value={values.email || ""}
+          onChange={handleChange}
           autoComplete="off"
         />
         <ErrorMessage message={errors} />
@@ -58,8 +54,8 @@ export default function AuthWithForm(props) {
           name="password"
           type="password"
           required
-          value={password || ""}
-          onChange={onChange}
+          value={values.password || ""}
+          onChange={handleChange}
           autoComplete="off"
           minLength="4"
         />

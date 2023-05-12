@@ -1,18 +1,15 @@
-import React from 'react';
-import { useInput } from '../hooks/input.hook';
+import React, { useEffect } from 'react';
+import useValidation from '../hooks/validate.hook';
 import ErrorMessage from './ErrorMessage';
 import { Link } from 'react-router-dom';
 
 export default function Register(props) {
 
-  // const email = useInput('', { isEmail: true });
-  // const password = useInput('');
-
-  const {values, onChange, resetForm, errors, isValid} = useInput();
+  const { values, handleChange, errors, isValid, resetForm } = useValidation();
 
   useEffect(() => {
     resetForm();
-  }, [ props.isOpen]);
+  }, [props.isOpen, resetForm]);
 
   function handleSubmit(evt) {
     evt.preventDefault()
@@ -29,7 +26,7 @@ export default function Register(props) {
           placeholder="Email"
           required
           value={values.email || ""}
-          onChange={onChange}
+          onChange={handleChange}
         />
         <ErrorMessage message={errors} />
         <input
@@ -40,17 +37,15 @@ export default function Register(props) {
           minLength="4"
           required
           value={values.password || ""}
-          onChange={onChange}
+          onChange={handleChange}
         />
         <ErrorMessage message={errors} />
         <button
           className={`auth__submit ${
-            !email.isValid.result || !password.isValid.result
-              ? 'popup__save_disabled'
-              : ''
+            !isValid ? 'popup__save_disabled' : ''
           }`}
           type="submit"
-          disabled={!email.isValid.result || !password.isValid.result}
+          disabled={!isValid}
         >
           Зарегистрироваться
         </button>

@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
-import { useInput } from '../hooks/input.hook';
+import useValidation from '../hooks/validate.hook';
 import ErrorMessage from './ErrorMessage';
 
 
 export default function Login(props) {
 
-  const {values, onChange, resetForm, errors, isValid} = useInput();
+  const { values, handleChange, errors, isValid, resetForm } = useValidation();
 
   useEffect(() => {
     resetForm();
-  }, [ props.isOpen]);
+  }, [props.isOpen, resetForm]);
 
   function handleSubmit(evt) {
     evt.preventDefault()
@@ -27,7 +27,7 @@ export default function Login(props) {
           placeholder="Email"
           required
           value={values.email || ""}
-          onChange={onChange}
+          onChange={handleChange}
         />
         <ErrorMessage message={errors} />
         <input
@@ -39,7 +39,7 @@ export default function Login(props) {
           minLength="4"
           required
           value={values.password || ""}
-          onChange={onChange}
+          onChange={handleChange}
         />
         <ErrorMessage message={errors} />
         <button
