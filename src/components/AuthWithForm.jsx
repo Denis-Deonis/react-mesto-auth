@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useInput } from '../hooks/input.hook';
+import React, { useEffect } from 'react';
+import useValidation from '../hooks/validate.hook';
 import ErrorMessage from './ErrorMessage';
 import { Link } from 'react-router-dom';
 
@@ -8,24 +8,30 @@ import { Link } from 'react-router-dom';
 
 export default function AuthWithForm(props) {
 
-  const [email, setEmail] = useInput('', { isEmail: true });
-  const [password, setPassword] = useState('');
+  // const [password, setPassword] = useState('');  
+  // const [email, setEmail] = useState('');  
 
-  const emailErrorMessage = useInput('', { isEmail: true });
-  const passwordErrorMessage = useInput('');
+
+  const { values, handleChange, errors, resetForm } = useValidation();
+
+  useEffect(() => {
+    resetForm();
+  }, [ props.isOpen]);
+
+
 
   function handleSubmit(evt) {
     evt.preventDefault()
-    props.onSubmit(email, password)
+    props.onSubmit({email:values.email, password: values.password})
   }
 
-  function handleEmailChange(evt) {
-    setEmail(evt.target.value)
-  }
+  // function handleEmailChange(evt) {
+  //   setEmail(evt.target.value)
+  // }
 
-  function handlePasswordChange(evt) {
-    setPassword(evt.target.value)
-  }
+  // function handlePasswordChange(evt) {
+  //   setPassword(evt.target.value)
+  // }
 
   return(
     <section className="auth">
@@ -37,35 +43,33 @@ export default function AuthWithForm(props) {
           name="email"
           type="email"
           required
-          value={email || ""}
-          onChange={handleEmailChange}
+          value={values.email || ""}
+          onChange={handleChange}
           autoComplete="off"
-          {...email}
         />
-        <ErrorMessage message={emailErrorMessage.isValid.errorMessage} />
+        <ErrorMessage message={errors} />
         <input
           className="auth__input"
           placeholder="Пароль"
           name="password"
           type="password"
           required
-          value={password || ""}
-          onChange={handlePasswordChange}
+          value={values.password || ""}
+          onChange={handleChange}
           autoComplete="off"
           minLength="4"
-          {...password}
         />
-        <ErrorMessage message={passwordErrorMessage.isValid.errorMessage} />
+        <ErrorMessage message={errors} />
         <button
           className={`auth__submit ${
-            !email.isValid.result || !password.isValid.result
+            !props.buttonDisabled
               ? 'popup__save_disabled'
               : ''
           }`}
           type="submit"
-          disabled={!email.isValid.result || !password.isValid.result}
+          disabled={!props.buttonDisabled}
         >
-          {props.isSubmitting ? "Сохранение..." : props.buttonText}
+          { props.buttonText}
         </button>
         <div className="auth__signup">
           <p className="auth__signup_text">

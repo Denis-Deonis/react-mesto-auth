@@ -37,52 +37,7 @@ function App() {
   const [emailName, setEmailName] = useState(null);
   const [isInfoToolTipOpen, setInfoToolTipOpen] = useState(false);
 
-  useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([user, cards]) => {
-        setCurrentUser(user);
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (
-      isConfirmationPopupOpen ||
-      isEditAvatarPopupOpen ||
-      isEditProfilePopupOpen ||
-      isAddPlacePopupOpen ||
-      selectedCard ||
-      isInfoToolTipOpen
-    ) {
-      function handleEsc(evt) {
-        evt.key === "Escape" && closeAllPopups();
-      }
-
-      document.addEventListener("keydown", handleEsc);
-
-      return () => {
-        document.removeEventListener("keydown", handleEsc);
-      };
-    }
-  }, [
-    isConfirmationPopupOpen,
-    isEditAvatarPopupOpen,
-    isEditProfilePopupOpen,
-    isAddPlacePopupOpen,
-    selectedCard,
-    isInfoToolTipOpen,
-  ]);
-
-  useEffect(() => {
-    if (isLoggedIn === true) {
-      navigate('/')
-    }
-  }, [isLoggedIn, navigate]);
-
-  useEffect(() => {
+  function tokenCheck() {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       getToken(jwt)
@@ -94,7 +49,7 @@ function App() {
         })
         .catch((error) => console.log(`Ошибка: ${error}`))
     }
-  }, [getToken]);
+  }
 
   function closeAllPopups() {
     setSelectedCard(null);
@@ -190,7 +145,7 @@ function App() {
         localStorage.setItem("jwt", res.token);
         setIsLoggedIn(true);
         setEmailName(email);
-        navigate("/");
+        tokenCheck();
       })
       .catch((error) => console.log(`Ошибка: ${error}`))
   }
@@ -208,6 +163,58 @@ function App() {
       setIsMobileMenuOpen(!isMobileMenuOpen);
     }
   }
+
+  
+
+  useEffect(() => {
+    tokenCheck();
+    if(isLoggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+      .then(([user, cards]) => {
+        setCurrentUser(user);
+        setCards(cards);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      isConfirmationPopupOpen ||
+      isEditAvatarPopupOpen ||
+      isEditProfilePopupOpen ||
+      isAddPlacePopupOpen ||
+      selectedCard ||
+      isInfoToolTipOpen
+    ) {
+      function handleEsc(evt) {
+        evt.key === "Escape" && closeAllPopups();
+      }
+
+      document.addEventListener("keydown", handleEsc);
+
+      return () => {
+        document.removeEventListener("keydown", handleEsc);
+      };
+    }
+  }, [
+    isConfirmationPopupOpen,
+    isEditAvatarPopupOpen,
+    isEditProfilePopupOpen,
+    isAddPlacePopupOpen,
+    selectedCard,
+    isInfoToolTipOpen,
+  ]);
+
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      navigate('/')
+    }
+  }, [isLoggedIn, navigate]);
+
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
