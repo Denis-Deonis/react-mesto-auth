@@ -48,7 +48,7 @@ export default function Header(props) {
           </div>
         )}
 
-        {props.isLoggedIn && (
+        
           <button
             className="header__burger"
             type="button"
@@ -59,7 +59,7 @@ export default function Header(props) {
               })`,
             }}
           />
-        )}
+        
       </header>
     </>
   )

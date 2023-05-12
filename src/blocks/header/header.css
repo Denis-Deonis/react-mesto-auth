@@ -22,12 +22,4 @@
   }
 }
 
-@media screen and (max-width: 320px) {
-  .header {
-    max-width: 320px;
-    border-bottom: none;
-  }
-  .header::after {
-    display: block;
-  }
-}
+

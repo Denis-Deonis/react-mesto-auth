@@ -38,7 +38,8 @@ function App() {
   const [isInfoToolTipOpen, setInfoToolTipOpen] = useState(false);
 
   useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    if (isLoggedIn === true) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([user, cards]) => {
         setCurrentUser(user);
         setCards(cards);
@@ -46,7 +47,8 @@ function App() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (
