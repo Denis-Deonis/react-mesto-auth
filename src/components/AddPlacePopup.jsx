@@ -1,7 +1,7 @@
 import PopupWithForm from './PopupWithForm';
 import React, { useEffect } from 'react';
 import { useValidation } from "../hooks/validition.hook";
-import ErrorMessage from './ErrorMessage'
+import ErrorMessage from './ErrorMessage';
 
 export default function AddPlacePopup(props) {
 
@@ -42,7 +42,7 @@ export default function AddPlacePopup(props) {
           minLength="2"
           maxLength="30"
           id="title"
-          value={values.name}
+          value={values.name || ""}
           onChange={handleChange}
         />
         <ErrorMessage message={errors.name} />
@@ -55,7 +55,7 @@ export default function AddPlacePopup(props) {
           placeholder="Ссылка на картинку"
           required
           id="link"
-          value={values.link}
+          value={values.link || ""}
           onChange={handleChange} 
         />
         <ErrorMessage message={errors.link} />

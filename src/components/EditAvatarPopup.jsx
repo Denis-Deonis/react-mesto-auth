@@ -1,25 +1,33 @@
 import PopupWithForm from './PopupWithForm';
 import React, {useRef, useEffect} from 'react';
+import { useValidation } from "../hooks/validition.hook";
+import ErrorMessage from './ErrorMessage';
 
 
 export default function EditAvatarPopup(props) {
 
   const avatarRef  = useRef();
 
+  const { resetForm, values, handleChange, errors,  isValid } =
+    useValidation()
+
   useEffect( ()=> {
     avatarRef.current.value = '';
     }, [props.isOpen]
   )
 
-  function handleChangeAvatar() {
-    return avatarRef.current.value
-  }
+  // function handleChangeAvatar() {
+  //   return avatarRef.current.value
+  // }
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    props.onUpdateAvatar({
-      avatar: avatarRef.current.value
-    })
+    if (isValid) {
+      props.onUpdateAvatar({
+        avatar: avatarRef.current.value
+      })
+      resetForm();
+    }
   }
 
 
@@ -42,10 +50,11 @@ export default function EditAvatarPopup(props) {
           type="url"
           placeholder="Введите ссылку URL"
           required
-          onChange={handleChangeAvatar}
+          onChange={handleChange}
+          value={values.avatar || ""} 
           ref={avatarRef}
         />
-        <span className="avatar-error error"></span>
+        <ErrorMessage message={errors.avatar} />
       </label>
     </PopupWithForm>
   );

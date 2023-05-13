@@ -29,6 +29,7 @@
 @import url(./blocks/header/__mobile-menu/__exit/header__mobile-menu_exit.css);
 
 @import url(./blocks/header/__user-info/header__user-info.css);
+@import url(./blocks/header/__user-info/__user-info_disabled/header__user-info_disabled.css);
 @import url(./blocks/header/__email/header__email.css);
 /* </header> */
 

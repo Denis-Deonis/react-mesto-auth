@@ -14,6 +14,13 @@
   }
 }
 
+@media screen and (max-width: 680px) {
+  .profile__avatar {
+    width: 100%;
+    height: 100%;
+  }
+}
+
 .profile__avatar:hover {
   transform: scale(1.04);
 }
