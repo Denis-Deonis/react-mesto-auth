@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Denis-Deonis/react-mesto-auth/static/css/main.d2c3f06a.css",
-    "main.js": "/Denis-Deonis/react-mesto-auth/static/js/main.94b15433.js",
+    "main.css": "/Denis-Deonis/react-mesto-auth/static/css/main.f5ab982f.css",
+    "main.js": "/Denis-Deonis/react-mesto-auth/static/js/main.452080d6.js",
     "static/media/Inter-Medium.woff": "/Denis-Deonis/react-mesto-auth/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
     "static/media/Inter-Black.woff": "/Denis-Deonis/react-mesto-auth/static/media/Inter-Black.c6938660eec019fefd68.woff",
     "static/media/Inter-Regular.woff": "/Denis-Deonis/react-mesto-auth/static/media/Inter-Regular.8c206db99195777c6769.woff",
@@ -21,11 +21,11 @@
     "static/media/CloseIcon.svg": "/Denis-Deonis/react-mesto-auth/static/media/CloseIcon.039f1f5203f653b4bacd.svg",
     "static/media/Add_Button.svg": "/Denis-Deonis/react-mesto-auth/static/media/Add_Button.bed8c136e13907f5eefb.svg",
     "static/media/Vector.svg": "/Denis-Deonis/react-mesto-auth/static/media/Vector.d5d6f8af0577b9c95ee4.svg",
-    "main.d2c3f06a.css.map": "/Denis-Deonis/react-mesto-auth/static/css/main.d2c3f06a.css.map",
-    "main.94b15433.js.map": "/Denis-Deonis/react-mesto-auth/static/js/main.94b15433.js.map"
+    "main.f5ab982f.css.map": "/Denis-Deonis/react-mesto-auth/static/css/main.f5ab982f.css.map",
+    "main.452080d6.js.map": "/Denis-Deonis/react-mesto-auth/static/js/main.452080d6.js.map"
   },
   "entrypoints": [
-    "static/css/main.d2c3f06a.css",
-    "static/js/main.94b15433.js"
+    "static/css/main.f5ab982f.css",
+    "static/js/main.452080d6.js"
   ]
 }
