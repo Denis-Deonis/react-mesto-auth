@@ -24,7 +24,7 @@
 
 ## Ссылка на сайт
 
-[Проектная работа на сайте GitHub Pages](https://denis-deonis.github.io/mesto-react/)
+[Проектная работа на сайте GitHub Pages](https://denis-deonis.github.io/react-mesto-auth/)
 
 ## Функционал:
 
