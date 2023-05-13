@@ -38,7 +38,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://github.com/Denis-Deonis/react-mesto-auth",
+  "homepage": "https://denis-deonis.github.io/react-mesto-auth/",
   "devDependencies": {
     "gh-pages": "^5.0.0"
   }
